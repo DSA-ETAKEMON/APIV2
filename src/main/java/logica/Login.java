@@ -1,7 +1,7 @@
 package logica;
 
 import Entity.User;
-import Exception.*;
+import Exception.FormatException;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;

@@ -1,9 +1,5 @@
 package logica;
 
-import java.text.DecimalFormat;
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by hixam on 21/12/16.
  */

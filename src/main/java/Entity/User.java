@@ -1,5 +1,6 @@
 package Entity;
-import Exception.*;
+
+import Exception.FormatException;
 
 /**
  * Created by hicham.az on 09/12/2016.
