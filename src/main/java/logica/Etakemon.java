@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hixam on 29/12/16.
@@ -41,5 +43,35 @@ public class Etakemon {
 
         }
         return  etk;
+    }
+
+    @GET
+    @Path("/etakemonslist")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Etakemons> list() {
+
+        List<Etakemons> etkList = new ArrayList<Etakemons>();
+        Gson gson = new Gson();
+        Etakemons etk = new Etakemons();
+        List<String> etkListJson = new ArrayList<String>();
+        etkList = etk.selectAll(); ;//(gson.fromJson(etakemonsListjson, Etakemons.class));
+
+        if(etkList.size()!=0) {
+            try {
+                for(Etakemons e : etkList)
+                {
+                    etkListJson.add(gson.toJson(e));
+                    System.out.print("----- Añadiendo "+e.getName() + " a la lista.");
+                }
+            } catch (Exception e) {
+                System.out.print("error al insertar etkemon ------- "+e.toString());
+            }
+        }
+        else
+        {
+            System.out.print("No hay etakemons que listar.");
+
+        }
+        return  etkList;
     }
 }

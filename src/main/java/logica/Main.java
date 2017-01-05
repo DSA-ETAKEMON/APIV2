@@ -1,5 +1,6 @@
 package logica;
 
+import Entity.Etakemons;
 import Exception.FormatException;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -7,6 +8,8 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class.
@@ -61,6 +64,10 @@ public class Main {
          }
         System.out.print("usuarrio name es :" + usr.getEmail() );
 */
+        /*Etakemon et = new Etakemon();
+        Etakemons e = new Etakemons();
+        List<String> list = new ArrayList<String>();
+        list = et.list();*/
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));

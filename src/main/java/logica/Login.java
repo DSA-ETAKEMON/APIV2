@@ -69,7 +69,7 @@ public class Login {
         }catch (Exception e)
         {
             System.out.print(e.toString());
-            res = e.toString();
+            return null;
         }
 
         if(!UserExists) {
@@ -78,14 +78,21 @@ public class Login {
                 us.setPuntuacionTotal(0);
             } catch (NullPointerException e) {
                 res = "los campos no pueden ser nulos";
+                return null;
             }
 
             try {
-                us.insert();
-                res = "Usuario registrado";
-                insertOK = true;
+                if(us.getNick().length()!=0 && us.getName().length()!=0 && us.getEmail().length()!=0
+                        && us.getSurname().length()!=0 && us.getPassword().length()!=0) {
+                    us.insert();
+                    res = "Usuario registrado";
+                    insertOK = true;
+                }else
+                {
+                return null;}
             } catch (Exception e) {
                 System.out.print(e.toString());
+                return null;
             }
         }
         else
@@ -118,6 +125,7 @@ public class Login {
         }catch (Exception e)
         {
             System.out.print(e.toString());
+            return null;
         }
 
         if(UserExists) {
@@ -133,6 +141,7 @@ public class Login {
                         usrToUpdate.setSurname(us.getSurname());
                 } catch (FormatException e) {
                     System.out.print(e.toString());
+                    return null;
                 }
 
             } catch (NullPointerException e) {    // TODO parece que sobra, repasar.
@@ -144,7 +153,7 @@ public class Login {
                 System.out.print("Usuario actualizado correctamente.");
             } catch (Exception e) {
                 System.out.print("Error al actualilzar usuario : "+e.toString());
-                // e.toString();
+                return null;
             }
         }
         else
