@@ -97,7 +97,8 @@ public class Login {
         }
         else
         {
-            res = "el nick ya existe";
+            System.out.print("el nick ya existe");
+            return null;
         }
         return  us;
     }
