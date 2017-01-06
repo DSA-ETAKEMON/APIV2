@@ -2,6 +2,7 @@ package DAO;
 
 import Entity.Etakemons;
 import Entity.User;
+import Entity.UserEtakemons;
 import Exception.FormatException;
 
 import java.sql.*;
@@ -30,35 +31,39 @@ public class DAO extends DAOConnection{
         }
     }
 
-    public void select(int primaryKey) {
-        String query = getSelectQuery();
+    public Etakemons select(String where,int someThing) {
+        String query = getSelectQuery(where,someThing);
         System.out.println(query);
+        Etakemons etk  = new Etakemons();
         Connection con = getConnection();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            int position = 1;
-            addPrimaryKeyParameter(preparedStatement, position, primaryKey);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
-            while (resultSet.next()) {
-                setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            //int position = 1;
+           // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                etk.setId(rs.getInt("id"));
+                etk.setName(rs.getString("name"));
+                etk.setTipo(rs.getString("tipo"));
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
             }
             preparedStatement.close();
             con.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         }
+        return etk;
     }
 
-    public Etakemons selectUnEtakemon(int primaryKey) {
-        String query = getSelectQuery();
+    public Etakemons selectUnEtakemon(String where,String someThing) {
+        String query = getSelectQuery(where,someThing);
         System.out.println(query);
         Etakemons etk = new Etakemons();
         Connection con = getConnection();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             int position = 1;
-            addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            //addPrimaryKeyParameter(preparedStatement, position, primaryKey);
             ResultSet resultSet = preparedStatement.executeQuery();
             ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
             while (resultSet.next()) {
@@ -76,24 +81,23 @@ public class DAO extends DAOConnection{
 
 
 
-    public List<Etakemons> selectEtakemonByidUser(String nick) {
-        String query = getSelectQueryByIDUser();
+    public List<UserEtakemons> selectEtakemonByUser(String where,int iduser) {
+        String query = getSelectQueryByIDUser( where ,iduser);
         System.out.println(query);
-        Etakemons etk = new Etakemons();
-        List<Etakemons> miLista = new ArrayList<Etakemons>();
+        List<UserEtakemons> miLista = new ArrayList<UserEtakemons>();
         Connection con = getConnection();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            int position = 1;
+           // int position = 1;
             // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
             ResultSet rs = preparedStatement.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             while (rs.next()) {
-                    etk.setTipo(rs.getString("tipo"));
-                    etk.setName(rs.getString("name"));
-                    etk.setPuntos(rs.getInt("puntos"));
-                    miLista.add(etk);
-
+                UserEtakemons userEtks = new UserEtakemons();
+                userEtks.setId(rs.getInt("id"));
+                userEtks.setIduser(rs.getInt("iduser"));
+                userEtks.setIdetakemon(rs.getInt("idetakemon"));
+                miLista.add(userEtks);
                 // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
             }
             preparedStatement.close();

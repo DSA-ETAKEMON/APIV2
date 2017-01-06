@@ -52,7 +52,7 @@ public class MyResource {
 
         return  res;
     }
-
+/*
     @GET
     @Path("/list/{nick}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -62,7 +62,7 @@ public class MyResource {
         Etakemons etk = new Etakemons();
         List<Etakemons> lst = new ArrayList<Etakemons>();
         try {
-            lst = etk.getEtakemons(nick);
+            lst = etk.getEtakemons("nick",nick);
         }catch(NullPointerException e)
         {
             System.out.print(e.toString());
@@ -77,7 +77,7 @@ public class MyResource {
         }
         return Json;
     }
-
+*/
     @GET
     @Path("/getpokemon/{id}")
     @Produces(MediaType.TEXT_PLAIN)
@@ -86,7 +86,7 @@ public class MyResource {
         Etakemons etk = new Etakemons();
 
         try {
-            etk = etk.getEtakemon(id);
+          //  etk = etk.getEtakemon(id);
         }catch(NullPointerException e)
         {
             System.out.print(e.toString());

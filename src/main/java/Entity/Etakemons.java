@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Etakemons extends DAO {
 
-  //  int id;
+    int id;
 int puntos;
     String tipo, name;
 
@@ -23,13 +23,13 @@ int puntos;
     }
 */
 
-   /* public int getId() {
+    public int getId() {
         return id;
-    }*/
+    }
 
-   /* public void setId(int id) {
+    public void setId(int id) {
         this.id = id;
-    }*/
+    }
 
     public String getTipo() {
         return tipo;
@@ -56,19 +56,19 @@ int puntos;
     }
 
     public Etakemons (){}
-
+/*
     public List<Etakemons> getEtakemons(String nick)
     {
         List<Etakemons> miLista = new ArrayList<Etakemons>();
         Etakemons etk = new Etakemons();
-        miLista = etk.selectEtakemonByidUser(nick);
+        miLista = etk.selectEtakemonByUser(nick);
         return miLista;
-    }
-
+    }*/
+/*
     public Etakemons getEtakemon(int id)
     {
         Etakemons etk  = new Etakemons();
         return etk.selectUnEtakemon(id);
-    }
+    }*/
 
 }

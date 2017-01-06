@@ -7,7 +7,7 @@ import Exception.FormatException;
  */
 public class User extends DAO.DAO {
 
-
+    int id;
     int totalEtakemons, puntuacionTotal;
     String name;
     String surname;
@@ -17,6 +17,14 @@ public class User extends DAO.DAO {
 
     public String getSurname() {
         return surname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setSurname(String surname) throws FormatException {
@@ -105,7 +113,6 @@ public class User extends DAO.DAO {
 
     public User getUserByNick(String nick)
     {
-
         User usr = new User();
         usr = usr.selectByNick(nick);
         return usr;

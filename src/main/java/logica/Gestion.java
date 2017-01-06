@@ -1,5 +1,11 @@
 package logica;
 
+import Entity.Etakemons;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Created by hixam on 21/12/16.
  */
@@ -23,5 +29,6 @@ public class Gestion {
 
         return (velocidad)   ; // dividido 1000 = metros
     }
+
 
 }
