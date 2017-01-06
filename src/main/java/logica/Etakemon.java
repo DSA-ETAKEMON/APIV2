@@ -47,6 +47,7 @@ public class Etakemon {
         }
         return  etk;
     }
+
     @GET
     @Path("/etakemonslist")
     @Produces(MediaType.APPLICATION_JSON)

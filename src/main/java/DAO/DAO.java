@@ -45,6 +45,7 @@ public class DAO extends DAOConnection{
                 etk.setId(rs.getInt("id"));
                 etk.setName(rs.getString("name"));
                 etk.setTipo(rs.getString("tipo"));
+                etk.setPuntos(rs.getInt("puntos"));
                 // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
             }
             preparedStatement.close();
