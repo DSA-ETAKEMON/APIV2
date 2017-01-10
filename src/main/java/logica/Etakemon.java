@@ -81,7 +81,7 @@ public class Etakemon {
             System.out.println("Lista cargada  ------- Tamaño lista : " +UsretkList.size());
             for(UserEtakemons data : UsretkList)
             {
-                etkList.add(etk.select("id",data.getIdetakemon()));
+                etkList.add(etk.selectEtakemon("id",data.getIdetakemon()));
             }
         }
         else

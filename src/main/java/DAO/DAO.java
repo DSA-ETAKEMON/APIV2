@@ -1,6 +1,7 @@
 package DAO;
 
 import Entity.Etakemons;
+import Entity.Fight;
 import Entity.User;
 import Entity.UserEtakemons;
 import Exception.FormatException;
@@ -31,7 +32,7 @@ public class DAO extends DAOConnection{
         }
     }
 
-    public Etakemons select(String where,int someThing) {
+    public Etakemons selectEtakemon(String where,int someThing) {
         String query = getSelectQuery(where,someThing);
         System.out.println(query);
         Etakemons etk  = new Etakemons();
@@ -55,6 +56,38 @@ public class DAO extends DAOConnection{
         }
         return etk;
     }
+
+    public Fight selectFight(String where, int someThing) {
+        String query = getSelectQuery(where,someThing);
+        System.out.println(query);
+        Fight pelea  = new Fight();
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            //int position = 1;
+            // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                pelea.setId(rs.getInt("id"));
+                pelea.setContrincanteuno(rs.getInt("contrincanteuno"));
+                pelea.setContrincantedos(rs.getInt("contrincantedos"));
+                pelea.setPuntoscontrincanteuno(rs.getInt("puntosContrincanteUno"));
+                pelea.setPuntoscontrincantedos(rs.getInt("puntosContrincanteDos"));
+                pelea.setEstado1(rs.getString("estado1"));
+                pelea.setEstado2(rs.getString("estado2"));
+                pelea.setJuego1(rs.getString("juego1"));
+                pelea.setEstado2(rs.getString("estado2"));
+                pelea.setGanador(rs.getString("ganador"));
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return pelea;
+    }
+
 
     public Etakemons selectUnEtakemon(String where,String someThing) {
         String query = getSelectQuery(where,someThing);

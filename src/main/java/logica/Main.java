@@ -1,7 +1,9 @@
 package logica;
 
 import Entity.Etakemons;
+import Entity.Fight;
 import Exception.FormatException;
+import com.google.gson.Gson;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -68,6 +70,17 @@ public class Main {
         Etakemons e = new Etakemons();
         List<String> list = new ArrayList<String>();
         list = et.list();*/
+/*
+        FightService fs = new FightService();
+        Fight f = new Fight();
+        Gson gson = new Gson();
+        f.setContrincanteuno(1);
+        f.setContrincantedos(2);
+        f.setEstado1("TRUE");
+        f.setEstado2("IDLE");
+        String jsonInString = gson.toJson(f);
+        fs.retar(jsonInString);
+*/
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
