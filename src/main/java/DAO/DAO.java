@@ -196,6 +196,23 @@ public class DAO extends DAOConnection{
             System.out.println(e.toString());
         }
     }
+    public void update( String where, int update) {
+        String query = getUpdateQuery(where,update);
+        System.out.println(query);
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            addClassFieldsParameters(preparedStatement);
+            int primaryKey = getPrimaryKeyParameter();
+            int position = (this.getClass().getDeclaredFields().length + 1);
+            addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
 
     public void delete() {
         String query = getDeleteQuery();

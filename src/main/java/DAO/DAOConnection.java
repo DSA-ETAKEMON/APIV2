@@ -80,6 +80,15 @@ public class DAOConnection {
         return query.toString();
     }
 
+    public String getUpdateQuery(String where, int update) {
+        StringBuffer query = new StringBuffer("UPDATE ");
+        query.append(this.getClass().getSimpleName());
+        query.append(" SET ");
+        addFieldsAndInterrogantsUpdateQuery(query);
+        query.append(" WHERE "+ where + " = "  +update+);
+        return query.toString();
+    }
+
     public String getDeleteQuery() {
         StringBuilder query = new StringBuilder("DELETE FROM ");
         query.append(this.getClass().getSimpleName());
