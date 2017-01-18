@@ -39,7 +39,7 @@ public class MyResource {
 
         String res ="";
      try {
-      us = us.getUserByNick(nick);
+      us = us.selectByNick(nick);
          isOK =true;
      }catch (Exception e)
      {

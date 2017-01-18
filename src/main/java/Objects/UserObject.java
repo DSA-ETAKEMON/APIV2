@@ -1,11 +1,11 @@
-package Entity;
-
+package Objects;
+import Entity.User;
 import Exception.FormatException;
 
 /**
  * Created by hicham.az on 09/12/2016.
  */
-public class User extends DAO.DAO {
+public class UserObject {
 
     int id;
     int totalEtakemons, puntuacionTotal;
@@ -29,7 +29,7 @@ public class User extends DAO.DAO {
 
     public void setSurname(String surname) throws FormatException {
         if(surname!=null)
-        this.surname = surname;
+            this.surname = surname;
         else
             throw new FormatException("El apellido no debe ser nulo");
     }
@@ -50,7 +50,15 @@ public class User extends DAO.DAO {
         this.puntuacionTotal = puntuacionTotal;
     }
 
-    public User() {
+    public UserObject(User u) {
+        this.id =u.getId();
+        this.email=u.getEmail();
+        this.nick = u.getNick();
+        this.name = u.getName();
+        this.surname = u.getSurname();
+        this.password = u.getPassword();
+        this.totalEtakemons = u.getTotalEtakemons();
+        this.puntuacionTotal = u.getPuntuacionTotal();
     }
 
     public String getName() {
@@ -58,9 +66,9 @@ public class User extends DAO.DAO {
     }
 
 
-    public void setName(String name) throws FormatException{
+    public void setName(String name) throws FormatException {
         if(name!=null)
-        this.name = name;
+            this.name = name;
         else
             throw new FormatException("El nombre no debe ser nulo");
     }
@@ -73,7 +81,7 @@ public class User extends DAO.DAO {
 
     public void setNick(String nick) throws FormatException {
         if(nick!=null)
-        this.nick = nick;
+            this.nick = nick;
         else
             throw new FormatException("El nick no debe ser nulo");
     }
@@ -84,7 +92,7 @@ public class User extends DAO.DAO {
 
     public void setEmail(String email) throws FormatException {
         if(email!=null)
-        this.email = email;
+            this.email = email;
         else throw new FormatException("El email no debe ser nulo");
     }
 
@@ -94,7 +102,7 @@ public class User extends DAO.DAO {
 
     public void setPassword(String password) throws FormatException {
         if(password!=null)
-        this.password = password;
+            this.password = password;
         else throw new FormatException("la contraseña no debe ser nulo");
     }
 

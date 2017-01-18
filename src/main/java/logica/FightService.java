@@ -1,6 +1,9 @@
 package logica;
 
 import Entity.Fight;
+import Entity.User;
+import Objects.FightObject;
+import Objects.UserObject;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -14,11 +17,12 @@ import java.util.List;
 @Path("fight")
 public class FightService {
 
+    // envia {'estado1':'TRUE','estado2':'IDLE','contrincanteuno':'1','contrincantedos':'2'}
     @POST
     @Path("/retar")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Fight retar(String fight) {
+    public FightObject retar(String fight) {
         if(fight.length() == 0)
             throw new BadRequestException("Reto incorrecto, json recibido vacio.");
         Fight pelea = new Fight();
@@ -33,36 +37,38 @@ public class FightService {
             System.out.print(e.toString());
             // e.toString();
         }
-        return  pelea;
+        return  new FightObject(pelea);
     }
 
-    @GET
+    @POST
     @Path("/misretos")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Fight consultarRetos(String fight) {
+    public List<FightObject> consultarRetos(String fight) {
         if(fight.length() == 0)
             throw new BadRequestException("Reto incorrecto, json recibido vacio.");
         Fight pelea = new Fight();
         Gson gson = new Gson();
         pelea = gson.fromJson(fight, Fight.class);
-        boolean insertOK=false;
+        List<FightObject> fl = new ArrayList<>();
         try {
-            pelea = pelea.selectFight("contrincantedos", pelea.getContrincantedos());//getUserByNick(us.getNick());
-            insertOK =true;
+            for (Fight f : pelea.selectFightOrderBy("contrincantedos", pelea.getContrincantedos(),"estado2","IDLE"))
+            {
+                fl.add(new FightObject(f));
+            }
         }catch (Exception e)
         {
             System.out.print(e.toString());
             // e.toString();
         }
-        return  pelea;
+        return fl;
     }
 
     @POST
     @Path("/returnreto")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Fight ReturnReto(String fight) {
+    public FightObject ReturnReto(String fight) {
         if(fight.length() == 0)
             throw new BadRequestException("Reto incorrecto, json recibido vacio.");
         Fight pelea = new Fight();
@@ -71,7 +77,7 @@ public class FightService {
         boolean insertOK=false;
         try {
             if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
-                pelea.update("contrincantedos", pelea.getContrincantedos());//getUserByNick(us.getNick());
+                pelea.update("estado2", pelea.getEstado2(),"id", pelea.getId());//getUserByNick(us.getNick());
                 insertOK = true;
             } else
             System.out.println("Estado 1: " + pelea.getEstado1() + " ***** Estado 2: " + pelea.getEstado2());
@@ -80,31 +86,33 @@ public class FightService {
         {
             System.out.print(e.toString());
         }
-        return  pelea;
+        return new FightObject(pelea.selectFight("id", String.valueOf(pelea.getId())));
     }
 
     @POST
     @Path("/GetTopUsers")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Fight> GetTopUsers() {
-        List<Fight> miLista = new ArrayList<Fight>();
-        Fight pelea = new Fight();
+    public List<UserObject> GetTopUsers() {
+        List<User> miLista = new ArrayList<User>();
+        List<UserObject> l = new ArrayList<UserObject>();
+        User us = new User();
        // Gson gson = new Gson();
        // pelea = gson.fromJson(fight, Fight.class);
        // boolean insertOK=false;
         try {
-            //if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
-            miLista =  pelea.selectAll();//("contrincantedos", pelea.getContrincantedos());//getUserByNick(us.getNick());
-              //  insertOK = true;
-           // } else
-                System.out.println("Estado 1: " + pelea.getEstado1() + " ***** Estado 2: " + pelea.getEstado2());
+                miLista =  us.selectAllOrderBy("puntuacionTotal");//("contrincantedos", pelea.getContrincantedos());//getUserByNick(us.getNick());
 
         }catch (Exception e)
         {
             System.out.print(e.toString());
         }
-
-        return  miLista;
+        if(miLista.size()!=0)
+        {
+            for(User f: miLista) {
+                l.add(new UserObject(f));
+            }
+        }
+        return  l;
     }
 }

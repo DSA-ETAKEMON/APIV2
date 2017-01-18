@@ -21,6 +21,7 @@ public class DAOConnection {
         properties.setProperty("password", "hicham");
         properties.setProperty("useSSL", "false");
         properties.setProperty("serverTimezone", "UTC");
+
         try{
             Class.forName(JDBC_DRIVER);
             con = DriverManager.getConnection(DB_URL, properties);
@@ -57,6 +58,13 @@ public class DAOConnection {
         return query.toString();
     }
 
+    public String getSelectQuery(String where, int someThing,String where2, String someThing2) {
+        StringBuilder query = new StringBuilder("SELECT * FROM ");
+        query.append(this.getClass().getSimpleName());
+        query.append(" WHERE " + where + " = "  + someThing + " AND " + where2 + " = '" + someThing2+"'");
+        return query.toString();
+    }
+
     public String getSelectQueryByNick() {
         StringBuilder query = new StringBuilder("SELECT * FROM ");
         query.append(this.getClass().getSimpleName());
@@ -80,12 +88,13 @@ public class DAOConnection {
         return query.toString();
     }
 
-    public String getUpdateQuery(String where, int update) {
+    public String getUpdateQuery(String update,String dato, String where, int someThing) {
         StringBuffer query = new StringBuffer("UPDATE ");
         query.append(this.getClass().getSimpleName());
         query.append(" SET ");
-        addFieldsAndInterrogantsUpdateQuery(query);
-        query.append(" WHERE "+ where + " = "  +update+);
+        query.append(update+ " = '"  +dato+"'");
+       // addFieldsAndInterrogantsUpdateQuery(query);
+        query.append(" WHERE "+ where + " = '"  +someThing+"'");
         return query.toString();
     }
 
@@ -99,6 +108,13 @@ public class DAOConnection {
     public String getSelectAllQuery() {
         StringBuilder query = new StringBuilder("SELECT * FROM ");
         query.append(this.getClass().getSimpleName());
+        return query.toString();
+    }
+
+    public String getSelectAllQueryOrderBy(String orderby) {
+        StringBuilder query = new StringBuilder("SELECT * FROM ");
+        query.append(this.getClass().getSimpleName());
+        query.append(" ORDER BY " + orderby + " DESC");
         return query.toString();
     }
 

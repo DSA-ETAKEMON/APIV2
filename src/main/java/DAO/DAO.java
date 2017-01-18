@@ -5,6 +5,7 @@ import Entity.Fight;
 import Entity.User;
 import Entity.UserEtakemons;
 import Exception.FormatException;
+import Objects.FightObject;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -57,7 +58,40 @@ public class DAO extends DAOConnection{
         return etk;
     }
 
-    public Fight selectFight(String where, int someThing) {
+    public List<Fight> selectFightOrderBy(String where, int someThing,String where2, String someThing2) {
+        String query = getSelectQuery(where,someThing,where2,someThing2);
+        System.out.println(query);
+        List<Fight> fl = new ArrayList<>();
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            //int position = 1;
+            // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Fight pelea  = new Fight();
+                pelea.setId(rs.getInt("id"));
+                pelea.setContrincanteuno(rs.getInt("contrincanteuno"));
+                pelea.setContrincantedos(rs.getInt("contrincantedos"));
+                pelea.setPuntoscontrincanteuno(rs.getInt("puntosContrincanteUno"));
+                pelea.setPuntoscontrincantedos(rs.getInt("puntosContrincanteDos"));
+                pelea.setEstado1(rs.getString("estado1"));
+                pelea.setEstado2(rs.getString("estado2"));
+                pelea.setJuego1(rs.getString("juego1"));
+                pelea.setJuego2(rs.getString("juego2"));
+                pelea.setGanador(rs.getString("ganador"));
+                fl.add((pelea));
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return fl;
+    }
+
+    public Fight selectFight(String where, String someThing) {
         String query = getSelectQuery(where,someThing);
         System.out.println(query);
         Fight pelea  = new Fight();
@@ -76,7 +110,7 @@ public class DAO extends DAOConnection{
                 pelea.setEstado1(rs.getString("estado1"));
                 pelea.setEstado2(rs.getString("estado2"));
                 pelea.setJuego1(rs.getString("juego1"));
-                pelea.setEstado2(rs.getString("estado2"));
+                pelea.setJuego2(rs.getString("juego2"));
                 pelea.setGanador(rs.getString("ganador"));
                 // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
             }
@@ -196,8 +230,8 @@ public class DAO extends DAOConnection{
             System.out.println(e.toString());
         }
     }
-    public void update( String where, int update) {
-        String query = getUpdateQuery(where,update);
+    public void update( String update, String dato, String where, int someThing) {
+        String query = getUpdateQuery(update,dato,where,someThing);
         System.out.println(query);
         Connection con = getConnection();
         try {
@@ -236,6 +270,35 @@ public class DAO extends DAOConnection{
         String query = getSelectAllQuery();
         System.out.println(query);
         Connection con = getConnection();
+         Fight fg = new Fight();
+         try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            while (resultSet.next()) {
+                Class classToLoad = this.getClass();
+                Object newObject = classToLoad.newInstance();
+                if(newObject.getClass() == Fight.class)
+                    fg = (Fight) newObject;
+              //  System.out.println(resultSet);
+              //  if(fg.getEstado1()!=null){
+                setFieldsFromResultSet(resultSet, resultSetMetaData, newObject);
+                objects.add(newObject);}
+           // }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException | InstantiationException | IllegalAccessException e) {
+            System.out.println(e.toString());
+        }
+        return objects;
+    }
+
+    public List selectAllOrderBy(String orderby) {
+        List<Object> objects = new ArrayList<>();
+        String query = getSelectAllQueryOrderBy(orderby);
+        System.out.println(query);
+        Connection con = getConnection();
+        Fight fg = new Fight();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -243,9 +306,13 @@ public class DAO extends DAOConnection{
             while (resultSet.next()) {
                 Class classToLoad = this.getClass();
                 Object newObject = classToLoad.newInstance();
+                if(newObject.getClass() == Fight.class)
+                    fg = (Fight) newObject;
+                //  System.out.println(resultSet);
+                //  if(fg.getEstado1()!=null){
                 setFieldsFromResultSet(resultSet, resultSetMetaData, newObject);
-                objects.add(newObject);
-            }
+                objects.add(newObject);}
+            // }
             preparedStatement.close();
             con.close();
         } catch (SQLException | InstantiationException | IllegalAccessException e) {

@@ -3,6 +3,7 @@ package logica;
 import Entity.User;
 import Exception.FormatException;
 import com.google.gson.Gson;
+import Objects.UserObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +19,7 @@ public class Login {
     @Path("/login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User login(String miUsr) {
+    public UserObject login(String miUsr) {
         if(miUsr == null)
             throw new BadRequestException("all parameters are mandatory");
 
@@ -30,7 +31,7 @@ public class Login {
         User mius = new User();
         String res ="";
         try {
-            mius = us.getUserByNick(us.getNick());
+            mius = us.selectByNick(us.getNick());
             isOK =true;
         }catch (Exception e)
             {
@@ -44,14 +45,14 @@ public class Login {
             else
                 System.out.print("Contraseña incorrecta");
         }
-        return  mius;
+        return  new UserObject(mius);
     }
 
     @POST
     @Path("/register")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User register(String miUsr) {
+    public UserObject register(String miUsr) {
         if(miUsr == null)
             throw new BadRequestException("all parameters are mandatory");
 
@@ -63,7 +64,7 @@ public class Login {
 
         try {
             User usr = new User();
-            usr = us.getUserByNick(us.getNick());
+            usr = us.selectByNick(us.getNick());
             if(usr.getNick()!=null)
             UserExists =true;
         }catch (Exception e)
@@ -100,14 +101,14 @@ public class Login {
             System.out.print("el nick ya existe");
             return null;
         }
-        return  us;
+        return  new UserObject(us);
     }
 
     @POST
     @Path("/update")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public User update(String miUsr) {
+    public UserObject update(String miUsr) {
         if(miUsr == null)
             throw new BadRequestException("all parameters are mandatory");
 
@@ -120,7 +121,7 @@ public class Login {
         String res ="";
 
         try {
-            usrToUpdate = us.getUserByNick(us.getNick());
+            usrToUpdate = us.selectByNick(us.getNick());
             if(usrToUpdate.getNick()!=null)
                 UserExists =true;
         }catch (Exception e)
@@ -161,7 +162,7 @@ public class Login {
         {
             System.out.println("El usuario que intenta actualizar no existe");
         }
-        return  usrToUpdate;
+        return new UserObject(usrToUpdate);
     }
 
 
