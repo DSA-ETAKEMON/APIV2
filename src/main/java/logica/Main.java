@@ -70,17 +70,19 @@ public class Main {
         Etakemons e = new Etakemons();
         List<String> list = new ArrayList<String>();
         list = et.list();*/
-/*
+
         FightService fs = new FightService();
         Fight f = new Fight();
         Gson gson = new Gson();
         f.setContrincanteuno(1);
         f.setContrincantedos(2);
         f.setEstado1("TRUE");
-        f.setEstado2("IDLE");
+        f.setEstado2("TRUE");
+        f.setJuego1("111000000");
+        f.setJuego2("001010010");
         String jsonInString = gson.toJson(f);
-        fs.retar(jsonInString);
-*/
+        fs.play(jsonInString);
+
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));

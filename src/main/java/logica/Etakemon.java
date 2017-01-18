@@ -2,6 +2,7 @@ package logica;
 
 import Entity.Etakemons;
 import Entity.UserEtakemons;
+import Objects.EtakemonObject;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -51,37 +52,42 @@ public class Etakemon {
     @GET
     @Path("/etakemonslist")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Etakemons> list() {
+    public List<EtakemonObject> list() {
 
         List<Etakemons> etkList = new ArrayList<Etakemons>();
+        List<EtakemonObject> miLista = new ArrayList<>();
         Gson gson = new Gson();
         Etakemons etk = new Etakemons();
         etkList = etk.selectAll(); ;//(gson.fromJson(etakemonsListjson, Etakemons.class));
             if(etkList.size()!=0) {
                 System.out.println("Lista cargada  ------- Tamaño lista : " +etkList.size());
+                for(Etakemons et: etkList)
+                {
+                    miLista.add(new EtakemonObject(et));
+                }
             }
             else
             {
-                etkList= null;
+                miLista= null;
                 System.out.println("No hay etakemons que listar.");
             }
-            return  etkList;
+            return  miLista;
     }
 
     @GET
     @Path("/misestakemons/{iduser}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Etakemons> MisEtakemonslist(@PathParam("iduser") int iduser) {
+    public List<EtakemonObject> MisEtakemonslist(@PathParam("iduser") int iduser) {
         UserEtakemons usrEtkemons = new UserEtakemons();
         Etakemons etk = new Etakemons();
         List<UserEtakemons> UsretkList = new ArrayList<UserEtakemons>();
-        List<Etakemons> etkList = new ArrayList<Etakemons>();
+        List<EtakemonObject> etkList = new ArrayList<EtakemonObject>();
         UsretkList = usrEtkemons.selectEtakemonByUser("iduser",iduser);
         if(UsretkList.size()!=0) {
             System.out.println("Lista cargada  ------- Tamaño lista : " +UsretkList.size());
             for(UserEtakemons data : UsretkList)
             {
-                etkList.add(etk.selectEtakemon("id",data.getIdetakemon()));
+                etkList.add(new EtakemonObject(etk.selectEtakemon("id",data.getIdetakemon())));
             }
         }
         else

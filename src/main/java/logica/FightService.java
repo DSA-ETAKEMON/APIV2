@@ -89,9 +89,8 @@ public class FightService {
         return new FightObject(pelea.selectFight("id", String.valueOf(pelea.getId())));
     }
 
-    @POST
+    @GET
     @Path("/GetTopUsers")
-    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserObject> GetTopUsers() {
         List<User> miLista = new ArrayList<User>();
@@ -115,4 +114,59 @@ public class FightService {
         }
         return  l;
     }
+
+    @POST
+    @Path("/jugar")
+   // @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String play(String fight) {
+        int res1=0, res2=0;
+        User us = new User();
+        Fight pelea = new Fight();
+         Gson gson = new Gson();
+         pelea = gson.fromJson(fight, Fight.class);
+        if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
+            try {
+                  String jugada1= pelea.getJuego1();
+                  String jugada2= pelea.getJuego2();
+                int i = 0;
+                for (char ch: jugada1.toCharArray()) {
+                    char j1 = jugada1.charAt(i);
+                    char j2 = jugada2.charAt(i);
+                    if(j1>j2)
+                    {
+                       res1++;
+                    }
+                    if(j1==j2)
+                    {
+                        if(j1 != '0' )
+                        {
+                            res2++;
+                        }
+                    }
+                    i++;
+                }
+
+
+            } catch (Exception e) {
+                System.out.print(e.toString());
+            }
+        }
+        else
+        // no se acepto el reto
+       // if(miLista.size()!=0)
+        {
+            gestionJugada(pelea);
+        }
+        String ganador = res1>res2 ? "Ganador es: "+pelea.getContrincanteuno() : "Ganador es: "+ pelea.getContrincantedos();
+        System.out.println("ganador de la partida es " + ganador);
+      return ganador;
+    }
+    public Fight gestionJugada(Fight f)
+    {
+       // update de la pelea -- set ganador
+       // update puntos jugadores
+        return null;
+    }
+
 }

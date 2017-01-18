@@ -193,6 +193,7 @@ public class DAO extends DAOConnection{
             while (rs.next()) {
 
                 try {
+                    user.setId(rs.getInt("id"));
                     user.setName(rs.getString("name"));
                     user.setNick(rs.getString("nick"));
                     user.setSurname(rs.getString("surname"));

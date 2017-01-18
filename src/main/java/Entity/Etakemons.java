@@ -12,7 +12,7 @@ public class Etakemons extends DAO {
 
     int id;
 int puntos;
-    String tipo, name;
+    String  tipo,name;
 
 /*
     public Etakemons(int id, String tipo, String nombre, String puntos) {
@@ -56,6 +56,7 @@ int puntos;
     }
 
     public Etakemons (){}
+
 /*
     public List<Etakemons> getEtakemons(String nick)
     {
