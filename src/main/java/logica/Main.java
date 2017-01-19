@@ -78,8 +78,8 @@ public class Main {
         f.setContrincantedos(2);
         f.setEstado1("TRUE");
         f.setEstado2("TRUE");
-        f.setJuego1("111000000");
-        f.setJuego2("001010010");
+        f.setJuego1("111011100");
+        f.setJuego2("111000010");
         String jsonInString = gson.toJson(f);
         fs.play(jsonInString);
 

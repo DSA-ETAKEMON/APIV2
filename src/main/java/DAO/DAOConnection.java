@@ -71,6 +71,12 @@ public class DAOConnection {
         query.append(" WHERE nick=");
         return query.toString();
     }
+    public String getSelectQueryBy(String select) {
+        StringBuilder query = new StringBuilder("SELECT * FROM ");
+        query.append(this.getClass().getSimpleName());
+        query.append(" WHERE "+ select+ " =");
+        return query.toString();
+    }
 
     public String getSelectQueryByIDUser(String where,int someThing) {
         StringBuilder query = new StringBuilder("SELECT * FROM ");
@@ -88,7 +94,7 @@ public class DAOConnection {
         return query.toString();
     }
 
-    public String getUpdateQuery(String update,String dato, String where, int someThing) {
+    public String getUpdateQuery(String update,String dato, String where, String someThing) {
         StringBuffer query = new StringBuffer("UPDATE ");
         query.append(this.getClass().getSimpleName());
         query.append(" SET ");

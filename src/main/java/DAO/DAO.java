@@ -214,6 +214,43 @@ public class DAO extends DAOConnection{
         return user;
     }
 
+    public User selectBy(String select, String value) {
+        String query = getSelectQueryBy(select);
+        query += "'" +value+"'";
+        System.out.println(query);
+        User user = new User();
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            int position = 1;
+            int primaryKey  = getPrimaryKeyParameter();
+            //  addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            while (rs.next()) {
+
+                try {
+                    user.setId(rs.getInt("id"));
+                    user.setName(rs.getString("name"));
+                    user.setNick(rs.getString("nick"));
+                    user.setSurname(rs.getString("surname"));
+                    user.setPassword(rs.getString("password"));
+                    user.setEmail(rs.getString("email"));
+                    user.setPuntuacionTotal(rs.getInt("puntuacionTotal"));
+                    user.setTotalEtakemons(rs.getInt("totalEtakemons"));
+                } catch (FormatException e) {
+                    System.out.print(e.toString());
+                }
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return user;
+    }
+
     public void update( String where, String update) {
         String query = getUpdateQuery(where,update);
         System.out.println(query);
@@ -231,7 +268,7 @@ public class DAO extends DAOConnection{
             System.out.println(e.toString());
         }
     }
-    public void update( String update, String dato, String where, int someThing) {
+    public void update( String update, String dato, String where, String someThing) {
         String query = getUpdateQuery(update,dato,where,someThing);
         System.out.println(query);
         Connection con = getConnection();

@@ -77,7 +77,7 @@ public class FightService {
         boolean insertOK=false;
         try {
             if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
-                pelea.update("estado2", pelea.getEstado2(),"id", pelea.getId());//getUserByNick(us.getNick());
+                pelea.update("estado2", pelea.getEstado2(),"id", String.valueOf(pelea.getId()));//getUserByNick(us.getNick());
                 insertOK = true;
             } else
             System.out.println("Estado 1: " + pelea.getEstado1() + " ***** Estado 2: " + pelea.getEstado2());
@@ -121,7 +121,7 @@ public class FightService {
     @Consumes(MediaType.APPLICATION_JSON)
     public String play(String fight) {
         int res1=0, res2=0;
-        User us = new User();
+        String ganador="";
         Fight pelea = new Fight();
          Gson gson = new Gson();
          pelea = gson.fromJson(fight, Fight.class);
@@ -146,8 +146,6 @@ public class FightService {
                     }
                     i++;
                 }
-
-
             } catch (Exception e) {
                 System.out.print(e.toString());
             }
@@ -156,17 +154,31 @@ public class FightService {
         // no se acepto el reto
        // if(miLista.size()!=0)
         {
-            gestionJugada(pelea);
         }
-        String ganador = res1>res2 ? "Ganador es: "+pelea.getContrincanteuno() : "Ganador es: "+ pelea.getContrincantedos();
+        User usr = new User();
+        ganador = res1>res2 ? "Ganador es: "+ pelea.getContrincanteuno() : "Ganador es: "+ pelea.getContrincantedos();
+        if(pelea.getContrincanteuno() == pelea.getContrincantedos())
+            ganador= "empate";
+        pelea.setGanador(ganador);
+        if(pelea.getGanador().length()!=0)
+        {
+            gestionJugada(pelea); // update de la partida y puntos user
+        }
         System.out.println("ganador de la partida es " + ganador);
       return ganador;
     }
     public Fight gestionJugada(Fight f)
     {
        // update de la pelea -- set ganador
-       // update puntos jugadores
-        return null;
+        if(!f.getGanador().equals("empate") || !f.getGanador().equals(""))
+        {
+            User us = new User();
+            f.update("ganador",f.getGanador(),"juego2",f.getJuego2());
+            us = us.selectBy("id",f.getGanador());
+            // update puntos jugadores
+            us.update("puntuacionTotal",Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
+        }
+        return f;
     }
 
 }
