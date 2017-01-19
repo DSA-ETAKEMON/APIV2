@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Created by hixam on 21/12/16.
  */
-public class Gestion {
+public  class Gestion {
 
     public static double MediaKm (double [] coordenadas, double duracion)
     {
@@ -28,6 +28,125 @@ public class Gestion {
 
 
         return (velocidad)   ; // dividido 1000 = metros
+    }
+
+    public static int Ganar ( int idEtakemon, int puntosGanador, int puntosPerdedor){
+
+        int puntosGanadosFinalPartida = 0;
+
+        switch (idEtakemon){
+            case 1: puntosGanadosFinalPartida = puntosGanador + 20 + (int) (puntosPerdedor*0.2);
+                break;
+            case 2: puntosGanadosFinalPartida = puntosGanador + 10 + (int) (puntosPerdedor*0.2);
+                break;
+            case 3: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*2;
+                break;
+            case 4: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 5: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 6: puntosGanadosFinalPartida = puntosGanador + 10 + (int) (puntosPerdedor*0.2);
+                break;
+            case 7: puntosGanadosFinalPartida = puntosGanador + 10 + (int) (puntosPerdedor*0.2);
+                break;
+            case 8: puntosGanadosFinalPartida = puntosGanador + 5 + (int) (puntosPerdedor*0.2);
+                break;
+            case 9: puntosGanadosFinalPartida = puntosGanador + 5 + (int) (puntosPerdedor*0.2);
+                break;
+            case 10: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*2;
+                break;
+            case 11: puntosGanadosFinalPartida = puntosGanador + 10 + (int) (puntosPerdedor*0.2);
+                break;
+            case 12: puntosGanadosFinalPartida = puntosGanador + 20 + (int) (puntosPerdedor*0.2);
+                break;
+            case 13: puntosGanadosFinalPartida = puntosGanador + 25 + (int) (puntosPerdedor*0.2);
+                break;
+            case 14: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*3;
+                break;
+            case 15: puntosGanadosFinalPartida = puntosGanador + 50 + (int) (puntosPerdedor*0.2);
+                break;
+            case 16: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*2;
+                break;
+            case 17: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 18: puntosGanadosFinalPartida = puntosGanador + 50 + (int) (puntosPerdedor*0.2);
+                break;
+            case 19: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 20: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*2;
+                break;
+            case 21: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 22: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2)*3;
+                break;
+            case 23: puntosGanadosFinalPartida = puntosGanador + 50 + (int) (puntosPerdedor*0.2);
+                break;
+            case 24: puntosGanadosFinalPartida = puntosGanador + (int) (puntosPerdedor*0.2);
+                break;
+            case 25: puntosGanadosFinalPartida = puntosGanador + 200 + (int) (puntosPerdedor*0.2);
+                break;
+        }
+        return puntosGanadosFinalPartida;
+    }
+
+    public static int Perder (int idEtakemon, int puntosPerdidos){
+
+        int puntosPerdidosFinalPartida = 0;
+
+
+        switch (idEtakemon){
+            case 1: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2))) ;
+                break;
+            case 2: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 3: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 4: puntosPerdidosFinalPartida = puntosPerdidos;
+                break;
+            case 5: puntosPerdidosFinalPartida = puntosPerdidos - (int)(puntosPerdidos*0.2)/2;
+                break;
+            case 6: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 7: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 8: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 9: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 10: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 11: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 12: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 13: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 14: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 15: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 16: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 17: puntosPerdidosFinalPartida = puntosPerdidos - (int)(puntosPerdidos*0.2)/2;
+                break;
+            case 18: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 19: puntosPerdidosFinalPartida = puntosPerdidos - (int)(puntosPerdidos*0.2)/2;
+                break;
+            case 20: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 21: puntosPerdidosFinalPartida = puntosPerdidos;
+                break;
+            case 22: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 23: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+            case 24: puntosPerdidosFinalPartida = puntosPerdidos;
+                break;
+            case 25: puntosPerdidosFinalPartida = (int) ((puntosPerdidos - (puntosPerdidos*0.2)));
+                break;
+        }
+        return puntosPerdidosFinalPartida;
     }
 
 

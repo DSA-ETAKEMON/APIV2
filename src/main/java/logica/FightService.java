@@ -177,22 +177,25 @@ public class FightService {
             User usPerdedor = new User();
             f.update("ganador",f.getGanador(),"juego2",f.getJuego2(),String.valueOf(f.getId()));
             usGanador = usGanador.selectBy("id",f.getGanador());
+            usGanador.setPuntuacionTotal(Gestion.Ganar(1,usGanador.getPuntuacionTotal(),usPerdedor.getPuntuacionTotal()));
 
             if(Integer.valueOf(f.getGanador()) != f.getContrincanteuno())
             {
                 // perdio el jugador 1
                 usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincanteuno()) );
+                usPerdedor.setPuntuacionTotal(Gestion.Perder(1,usPerdedor.getPuntuacionTotal()));
             }
             else
             {
                 // perdio el jugador 2
                 usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincantedos()) );
+                usPerdedor.setPuntuacionTotal(Gestion.Perder(1,usPerdedor.getPuntuacionTotal()));
             }
 
            // us2 = us1.getId() == f.getGanador() ?
             // update puntos jugadores
-            usGanador.update("puntuacionTotal", "10000");
-          //  usPerdedor.update("puntuacionTotal",Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
+            usGanador.update("puntuacionTotal", ""+usGanador.getPuntuacionTotal());
+            usPerdedor.update("puntuacionTotal", ""+usPerdedor.getPuntuacionTotal()); //Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
 
         }
         return f;
