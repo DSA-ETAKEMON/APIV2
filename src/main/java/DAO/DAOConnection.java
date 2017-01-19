@@ -94,13 +94,14 @@ public class DAOConnection {
         return query.toString();
     }
 
-    public String getUpdateQuery(String update,String dato, String where, String someThing) {
+    public String getUpdateQuery(String update,String dato, String where, String someThing,String algo) {
         StringBuffer query = new StringBuffer("UPDATE ");
         query.append(this.getClass().getSimpleName());
         query.append(" SET ");
         query.append(update+ " = '"  +dato+"'");
        // addFieldsAndInterrogantsUpdateQuery(query);
-        query.append(" WHERE "+ where + " = '"  +someThing+"'");
+        query.append(" , "+ where + " = '"  +someThing+"'");
+        query.append(" WHERE id = '"  +algo+"'");
         return query.toString();
     }
 

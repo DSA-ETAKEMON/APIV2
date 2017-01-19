@@ -77,7 +77,7 @@ public class FightService {
         boolean insertOK=false;
         try {
             if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
-                pelea.update("estado2", pelea.getEstado2(),"id", String.valueOf(pelea.getId()));//getUserByNick(us.getNick());
+                pelea.update("id", String.valueOf(pelea.getId()));//getUserByNick(us.getNick());
                 insertOK = true;
             } else
             System.out.println("Estado 1: " + pelea.getEstado1() + " ***** Estado 2: " + pelea.getEstado2());
@@ -156,10 +156,11 @@ public class FightService {
         {
         }
         User usr = new User();
-        ganador = res1>res2 ? "Ganador es: "+ pelea.getContrincanteuno() : "Ganador es: "+ pelea.getContrincantedos();
-        if(pelea.getContrincanteuno() == pelea.getContrincantedos())
+        ganador = res1>res2 ? ""+ pelea.getContrincanteuno() : ""+ pelea.getContrincantedos();
+        if(res1 == res2)
             ganador= "empate";
         pelea.setGanador(ganador);
+
         if(pelea.getGanador().length()!=0)
         {
             gestionJugada(pelea); // update de la partida y puntos user
@@ -172,11 +173,27 @@ public class FightService {
        // update de la pelea -- set ganador
         if(!f.getGanador().equals("empate") || !f.getGanador().equals(""))
         {
-            User us = new User();
-            f.update("ganador",f.getGanador(),"juego2",f.getJuego2());
-            us = us.selectBy("id",f.getGanador());
+            User usGanador = new User();
+            User usPerdedor = new User();
+            f.update("ganador",f.getGanador(),"juego2",f.getJuego2(),String.valueOf(f.getId()));
+            usGanador = usGanador.selectBy("id",f.getGanador());
+
+            if(Integer.valueOf(f.getGanador()) != f.getContrincanteuno())
+            {
+                // perdio el jugador 1
+                usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincanteuno()) );
+            }
+            else
+            {
+                // perdio el jugador 2
+                usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincantedos()) );
+            }
+
+           // us2 = us1.getId() == f.getGanador() ?
             // update puntos jugadores
-            us.update("puntuacionTotal",Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
+            usGanador.update("puntuacionTotal", "10000");
+          //  usPerdedor.update("puntuacionTotal",Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
+
         }
         return f;
     }

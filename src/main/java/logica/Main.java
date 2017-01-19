@@ -79,8 +79,10 @@ public class Main {
         f.setEstado1("TRUE");
         f.setEstado2("TRUE");
         f.setJuego1("111011100");
-        f.setJuego2("111000010");
+        f.setJuego2("111010010");
         String jsonInString = gson.toJson(f);
+        double a = 132.1;
+        int b = (int)a;
         fs.play(jsonInString);
 
         final HttpServer server = startServer();

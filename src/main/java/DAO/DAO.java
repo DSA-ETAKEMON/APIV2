@@ -268,8 +268,8 @@ public class DAO extends DAOConnection{
             System.out.println(e.toString());
         }
     }
-    public void update( String update, String dato, String where, String someThing) {
-        String query = getUpdateQuery(update,dato,where,someThing);
+    public void update( String update, String dato, String where, String someThing,String algo) {
+        String query = getUpdateQuery(update,dato,where,someThing,algo);
         System.out.println(query);
         Connection con = getConnection();
         try {
