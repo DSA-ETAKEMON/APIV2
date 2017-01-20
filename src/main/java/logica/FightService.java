@@ -1,7 +1,9 @@
 package logica;
 
+import Entity.Etakemons;
 import Entity.Fight;
 import Entity.User;
+import Entity.UserEtakemons;
 import Objects.FightObject;
 import Objects.UserObject;
 import com.google.gson.Gson;
@@ -10,6 +12,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by hixam on 6/01/17.
@@ -154,6 +157,7 @@ public class FightService {
         // no se acepto el reto
        // if(miLista.size()!=0)
         {
+            System.out.println("Reto no aceptado aun **************-----------***************");
         }
         User usr = new User();
         ganador = res1>res2 ? ""+ pelea.getContrincanteuno() : ""+ pelea.getContrincantedos();
@@ -165,6 +169,11 @@ public class FightService {
         {
             gestionJugada(pelea); // update de la partida y puntos user
         }
+        else
+        {
+            System.out.println("ganador calculado incorrectamente es igual a '' ");
+        }
+
         System.out.println("ganador de la partida es " + ganador);
       return ganador;
     }
@@ -175,30 +184,57 @@ public class FightService {
         {
             User usGanador = new User();
             User usPerdedor = new User();
-            f.update("ganador",f.getGanador(),"juego2",f.getJuego2(),String.valueOf(f.getId()));
+            f.update(""+(f.getId()));
             usGanador = usGanador.selectBy("id",f.getGanador());
-            usGanador.setPuntuacionTotal(Gestion.Ganar(1,usGanador.getPuntuacionTotal(),usPerdedor.getPuntuacionTotal()));
 
             if(Integer.valueOf(f.getGanador()) != f.getContrincanteuno())
             {
                 // perdio el jugador 1
                 usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincanteuno()) );
-                usPerdedor.setPuntuacionTotal(Gestion.Perder(1,usPerdedor.getPuntuacionTotal()));
+                f.setPuntoscontrincanteuno(usPerdedor.getPuntuacionTotal());
             }
             else
             {
                 // perdio el jugador 2
                 usPerdedor = usPerdedor.selectBy( "id" , String.valueOf(f.getContrincantedos()) );
-                usPerdedor.setPuntuacionTotal(Gestion.Perder(1,usPerdedor.getPuntuacionTotal()));
+                f.setPuntoscontrincantedos(usPerdedor.getPuntuacionTotal());
             }
 
-           // us2 = us1.getId() == f.getGanador() ?
+            int p1 = getRamdomEtakemon(usGanador);
+            int p2 = getRamdomEtakemon(usPerdedor);
+            System.out.println("ganador Etakemon : "+p1+" perdedor etakemon :" + p2);
+
+            int g1 = Gestion.Ganar(p1,usGanador.getPuntuacionTotal(),usPerdedor.getPuntuacionTotal());
+            int g2 = Gestion.Perder(p2,usPerdedor.getPuntuacionTotal());
+            System.out.println("ganador puntos : "+g1+" perdedor puntos :" + g2);
+
+            f.update(""+f.getId());
+            usGanador.setPuntuacionTotal(g1);
+            usPerdedor.setPuntuacionTotal(g2);
+
+            // us2 = us1.getId() == f.getGanador() ?
             // update puntos jugadores
-            usGanador.update("puntuacionTotal", ""+usGanador.getPuntuacionTotal());
-            usPerdedor.update("puntuacionTotal", ""+usPerdedor.getPuntuacionTotal()); //Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
+            usGanador.update(""+usGanador.getId());
+            usPerdedor.update(""+usPerdedor.getId()); //Integer.parseInt(f.getGanador())==(f.getContrincanteuno()) ? ""+f.getPuntoscontrincanteuno() : ""+f.getPuntoscontrincantedos());
 
         }
         return f;
     }
+public int getRamdomEtakemon(User us)
+            {
+             List<UserEtakemons> miList = new ArrayList<>();
+                UserEtakemons etk = new UserEtakemons();
+                miList= etk.selectEtakemonByUser("iduser",us.getId());
+                // falta crear caso id=0, cuando lista =0 , hacer que id = 0 devuelve los mismos puntos
+                int[] num = new int[miList.size()];
+                int i=0;
+                for(UserEtakemons data: miList)
+                {
+                    num[i] = data.getIdetakemon();
+                    i++;
+                }
+                int rnd = new Random().nextInt(num.length);
 
+                return num[rnd];
+            }
 }

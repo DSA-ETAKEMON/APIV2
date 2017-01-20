@@ -258,9 +258,9 @@ public class DAO extends DAOConnection{
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             addClassFieldsParameters(preparedStatement);
-            int primaryKey = getPrimaryKeyParameter();
-            int position = (this.getClass().getDeclaredFields().length + 1);
-            addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+           // int primaryKey = getPrimaryKeyParameter();
+           // int position = (this.getClass().getDeclaredFields().length + 1);
+           // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             con.close();
@@ -268,16 +268,16 @@ public class DAO extends DAOConnection{
             System.out.println(e.toString());
         }
     }
-    public void update( String update, String dato, String where, String someThing,String algo) {
-        String query = getUpdateQuery(update,dato,where,someThing,algo);
+    public void update( String id) {
+        String query = getUpdateQuery(id);
         System.out.println(query);
         Connection con = getConnection();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             addClassFieldsParameters(preparedStatement);
-            int primaryKey = getPrimaryKeyParameter();
-            int position = (this.getClass().getDeclaredFields().length + 1);
-            addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+           // int primaryKey = getPrimaryKeyParameter();
+          //  int position = (this.getClass().getDeclaredFields().length + 1);
+           // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
             preparedStatement.executeUpdate();
             preparedStatement.close();
             con.close();

@@ -74,12 +74,13 @@ public class Main {
         FightService fs = new FightService();
         Fight f = new Fight();
         Gson gson = new Gson();
-        f.setContrincanteuno(1);
+        f.setContrincanteuno(3);
         f.setContrincantedos(2);
         f.setEstado1("TRUE");
         f.setEstado2("TRUE");
         f.setJuego1("111011100");
         f.setJuego2("111010010");
+        f.setId(1);
         String jsonInString = gson.toJson(f);
         double a = 132.1;
         int b = (int)a;
