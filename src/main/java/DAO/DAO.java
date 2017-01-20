@@ -1,9 +1,6 @@
 package DAO;
 
-import Entity.Etakemons;
-import Entity.Fight;
-import Entity.User;
-import Entity.UserEtakemons;
+import Entity.*;
 import Exception.FormatException;
 import Objects.FightObject;
 
@@ -213,7 +210,34 @@ public class DAO extends DAOConnection{
         }
         return user;
     }
+    public EtakemonsDescription selectByEtkDescId(String select, String value) {
+        String query = getSelectQueryBy(select);
+        query += "'" +value+"'";
+        System.out.println(query);
+        Connection con = getConnection();
+        EtakemonsDescription etkdesc = new EtakemonsDescription();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
 
+            ResultSet rs = preparedStatement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            while (rs.next()) {
+
+
+                    etkdesc.setId(rs.getInt("id"));
+                    etkdesc.setIdetakemon(rs.getInt("idetakemon"));
+                    etkdesc.setPoder(rs.getString("poder"));
+
+
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return etkdesc;
+    }
     public User selectBy(String select, String value) {
         String query = getSelectQueryBy(select);
         query += "'" +value+"'";
@@ -222,9 +246,7 @@ public class DAO extends DAOConnection{
         Connection con = getConnection();
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            int position = 1;
-            int primaryKey  = getPrimaryKeyParameter();
-            //  addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+
             ResultSet rs = preparedStatement.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             while (rs.next()) {

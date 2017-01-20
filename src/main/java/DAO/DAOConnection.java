@@ -18,7 +18,7 @@ public class DAOConnection {
         String DB_URL = "jdbc:mysql://localhost:3306/projecteDB";
         Properties properties = new Properties();
         properties.setProperty("user", "root");
-        properties.setProperty("password", "hicham");
+        properties.setProperty("password", "root");
         properties.setProperty("useSSL", "false");
         properties.setProperty("serverTimezone", "UTC");
 

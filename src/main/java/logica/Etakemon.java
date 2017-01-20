@@ -1,8 +1,11 @@
 package logica;
 
 import Entity.Etakemons;
+import Entity.EtakemonsDescription;
+import Entity.User;
 import Entity.UserEtakemons;
 import Objects.EtakemonObject;
+import Objects.EtakemonsDescriptionObject;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -47,6 +50,31 @@ public class Etakemon {
 
         }
         return  etk;
+    }
+
+    @GET
+    @Path("/getdescription/{idetk}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public EtakemonsDescriptionObject getDescription(@PathParam("idetk") int idetk) {
+        if(idetk == 0)
+            throw new BadRequestException("id etakemon recibido vacio");
+        EtakemonsDescription etk = new EtakemonsDescription();
+        Gson gson = new Gson();
+        String res ="";
+
+            try {
+               etk = etk.selectByEtkDescId("idetakemon", ""+idetk);
+                //res = "Etakemon insertado";
+                System.out.println("Etakemon Description : " + etk.getPoder());
+
+            } catch (Exception e) {
+                System.out.println("error al recuperar description etkemon ------- "+e.toString());
+                // res = "error al insertar etkemon ------- "+e.toString();
+                etk = null;
+            }
+
+
+        return  new EtakemonsDescriptionObject(etk);
     }
 
     @GET
@@ -103,12 +131,26 @@ public class Etakemon {
     public String cazar(@PathParam("iduser") int iduser,@PathParam("idetakemon") int idetakemon) {
         UserEtakemons usrEtkemons = new UserEtakemons();
         Etakemons etk = new Etakemons();
+        User usr = new User();
+
         String res ="";
-        try{
-            usrEtkemons.setIduser(iduser);
-            usrEtkemons.setIdetakemon(idetakemon);
-            usrEtkemons.insert();
-            res = " CAZADO !";
+        try {
+
+            if (idetakemon<= 25 || idetakemon<=0){
+                res = " CAZADO !";
+                etk = etk.selectEtakemon("id", idetakemon);
+                usr = usr.selectBy("id", "" + iduser);
+                usr.setPuntuacionTotal(usr.getPuntuacionTotal() + etk.getPuntos());
+                usrEtkemons.setIduser(iduser);
+                usrEtkemons.setIdetakemon(idetakemon);
+                usrEtkemons.insert();
+            usr.setTotalEtakemons(usr.getTotalEtakemons() + 1);
+                usr.update("" + usr.getId());
+
+            }
+            else
+            res= "etakemon no existe";
+
             System.out.println(res);
         }catch (Exception e){
             res = "error al setear datos a UserEtakemons, etakemon  no cazado : " +e.toString();
