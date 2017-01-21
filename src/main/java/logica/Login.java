@@ -36,14 +36,17 @@ public class Login {
         }catch (Exception e)
             {
             System.out.print(e.toString());
+            mius = null;
             // e.toString();
             }
         if(mius!=null && isOK && us.getPassword() != null) {
             pass = mius.getPassword();
             if (us.getPassword().equals(pass))
                 System.out.print("login correcto");
-            else
+            else {
                 System.out.print("Contraseña incorrecta");
+                mius = null;
+            }
         }
         return  new UserObject(mius);
     }

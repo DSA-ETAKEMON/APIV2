@@ -79,7 +79,8 @@ public class FightService {
         pelea = gson.fromJson(fight, Fight.class);
         boolean insertOK=false;
         try {
-            if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
+            if(pelea.getEstado1().equals("TRUE") && !pelea.getEstado2().equals("IDLE")) {
+
                 pelea.update("id", String.valueOf(pelea.getId()));//getUserByNick(us.getNick());
                 insertOK = true;
             } else
