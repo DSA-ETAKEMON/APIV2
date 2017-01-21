@@ -93,6 +93,54 @@ public class FightService {
         return new FightObject(pelea.selectFight("id", String.valueOf(pelea.getId())));
     }
 
+    @POST
+    @Path("/misretosenviadosidle")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<FightObject> retosEnviadosPendientes(String fight) {
+        if(fight.length() == 0)
+            throw new BadRequestException("Reto incorrecto, json recibido vacio.");
+        Fight pelea = new Fight();
+        Gson gson = new Gson();
+        pelea = gson.fromJson(fight, Fight.class);
+        List<FightObject> fl = new ArrayList<>();
+        try {
+            for (Fight f : pelea.selectFightOrderBy("contrincanteuno", pelea.getContrincanteuno(),"estado2","IDLE"))
+            {
+                fl.add(new FightObject(f));
+            }
+        }catch (Exception e)
+        {
+            System.out.print(e.toString());
+            // e.toString();
+        }
+        return fl;
+    }
+
+    @POST
+    @Path("/misretosenviadosaccept")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<FightObject> retosEnviadosAceptados(String fight) {
+        if(fight.length() == 0)
+            throw new BadRequestException("Reto incorrecto, json recibido vacio.");
+        Fight pelea = new Fight();
+        Gson gson = new Gson();
+        pelea = gson.fromJson(fight, Fight.class);
+        List<FightObject> fl = new ArrayList<>();
+        try {
+            for (Fight f : pelea.selectFightOrderBy("contrincanteuno", pelea.getContrincanteuno(),"estado2","TRUE"))
+            {
+                fl.add(new FightObject(f));
+            }
+        }catch (Exception e)
+        {
+            System.out.print(e.toString());
+            // e.toString();
+        }
+        return fl;
+    }
+
     @GET
     @Path("/GetTopUsers")
     @Produces(MediaType.APPLICATION_JSON)
