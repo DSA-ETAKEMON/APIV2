@@ -206,7 +206,7 @@ public class FightService {
         Fight pelea = new Fight();
          Gson gson = new Gson();
          pelea = gson.fromJson(fight, Fight.class);
-        if(pelea.getJuego1().length()!=0 || pelea.getJuego1().length()!=0) {
+        if(pelea.getJuego1().length()!=0 && pelea.getJuego2()!=null) {
             try {
                   String jugada1= pelea.getJuego1();
                   String jugada2= pelea.getJuego2();
@@ -235,18 +235,21 @@ public class FightService {
         // no se acepto el reto
        // if(miLista.size()!=0)
         {
-            if(!pelea.getJuego1().equals("NULL") || pelea.getJuego2().equals("NULL"))
-                pelea.update(""+pelea.getId());
-            System.out.println("Tu oponente aun no ha jugado **************-----------***************");
-            return "Tu oponente aun no ha jugado";
+            if(pelea.getJuego1().length() !=0 && pelea.getJuego2()==null) {
+                pelea.setJuego1(pelea.getJuego1());
+                pelea.update("" + pelea.getId());
+                System.out.println("Tu oponente aun no ha jugado **************-----------***************");
+                return "Jugada enviada, espera que tu oponente juegue";
+            }
         }
         User usr = new User();
         ganador = res1>res2 ? ""+ pelea.getContrincanteuno() : ""+ pelea.getContrincantedos();
+
         if(res1 == res2)
             ganador= "empate";
         pelea.setGanador(ganador);
 
-        if(pelea.getGanador().length()!=0)
+        if(pelea.getGanador()!=null)
         {
             gestionJugada(pelea); // update de la partida y puntos user
         }
@@ -260,6 +263,7 @@ public class FightService {
     }
     public Fight gestionJugada(Fight f)
     {
+        int p1=0,p2=0;
        // update de la pelea -- set ganador
         if(!f.getGanador().equals("empate") || !f.getGanador().equals(""))
         {
@@ -281,8 +285,8 @@ public class FightService {
                 f.setPuntoscontrincantedos(usPerdedor.getPuntuacionTotal());
             }
 
-            int p1 = getRamdomEtakemon(usGanador);
-            int p2 = getRamdomEtakemon(usPerdedor);
+             p1 = getRamdomEtakemon(usGanador);
+             p2 = getRamdomEtakemon(usPerdedor);
             System.out.println("ganador Etakemon : "+p1+" perdedor etakemon :" + p2);
 
             int g1 = Gestion.Ganar(p1,usGanador.getPuntuacionTotal(),usPerdedor.getPuntuacionTotal());

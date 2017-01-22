@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:9091/etakemon";
+    public static final String BASE_URI = "http://10.192.253.237:9091/etakemon";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
