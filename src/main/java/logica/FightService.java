@@ -157,7 +157,7 @@ public class FightService {
         try {
             for (Fight f : pelea.selectFightOrderBy("contrincantedos", pelea.getContrincantedos(),"estado2","TRUE"))
             {
-                if(f.getJuego1()!=null && Integer.valueOf(f.getGanador())!= 0 && f.getGanador().equals("empate") )
+                if(f.getJuego1()!=null )
                 fl.add(new FightObject(f));
             }
         }catch (Exception e)
@@ -206,7 +206,7 @@ public class FightService {
         Fight pelea = new Fight();
          Gson gson = new Gson();
          pelea = gson.fromJson(fight, Fight.class);
-        if(pelea.getJuego1().equals("NULL") || pelea.getJuego1().equals("NULL")) {
+        if(pelea.getJuego1().length()!=0 || pelea.getJuego1().length()!=0) {
             try {
                   String jugada1= pelea.getJuego1();
                   String jugada2= pelea.getJuego2();
