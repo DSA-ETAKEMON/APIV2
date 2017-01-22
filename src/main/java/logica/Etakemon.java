@@ -1,11 +1,9 @@
 package logica;
 
-import Entity.Etakemons;
-import Entity.EtakemonsDescription;
-import Entity.User;
-import Entity.UserEtakemons;
+import Entity.*;
 import Objects.EtakemonObject;
 import Objects.EtakemonsDescriptionObject;
+import Objects.EtakemonsPositionObject;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
@@ -77,6 +75,109 @@ public class Etakemon {
         return  new EtakemonsDescriptionObject(etk);
     }
 
+    @POST
+    @Path("/getPosition")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<EtakemonsPositionObject>  getPositionEtakemons(String etkPos) {
+        if(etkPos.length() == 0)
+            throw new BadRequestException("id etakemon recibido vacio");
+        EtakemonsPosition etk = new EtakemonsPosition();
+        List<EtakemonsPositionObject> etkList = new ArrayList<>();
+        Etakemons etakm = new Etakemons();
+        Gson gson = new Gson();
+        String res ="";
+        etk = gson.fromJson(etkPos, EtakemonsPosition.class);
+        try {
+            //tabla llena y no paso nada (carga desde web) --> devuelve tabla actual
+            if(etk.selectAllEtakemonPos().size()!=0) {
+                for (Object etkp : etk.selectAllEtakemonPos()) {
+                    //  Class classToLoad = etkp.getClass();
+                    // Object newObject = classToLoad.newInstance();
+                    // if(newObject instanceof EtakemonsPosition)
+                    etkList.add(new EtakemonsPositionObject((EtakemonsPosition)etkp));
+                }
+            } //tabla llena pero paso position --> update de la tabla
+          /*  else if(etk.selectAllEtakemonPos().size()!=0 && etk.getLng()!=0 && etk.getLat()!=0)
+            {
+                for (Object etkp : etk.selectAllEtakemonPos()) {
+                    ((EtakemonsPosition)etkp).setTipoetakemon(etakm.selectEtakemon("id",((EtakemonsPosition) etkp).getIdetakemon()).getTipo());;
+                    ((EtakemonsPosition)etkp).setLng(Gestion.getRandomPos(etk.getLng()));
+                    ((EtakemonsPosition)etkp).setLat(Gestion.getRandomPos(etk.getLat()));
+                    ((EtakemonsPosition)etkp).update(""+((EtakemonsPosition) etkp).getId());
+                    etkList.add(new EtakemonsPositionObject((EtakemonsPosition)etkp));
+                }
+            }*/
+            //tabla vacia y paso mi posicion ---> inserta nuevas posiciones
+            else if(etk.selectAllEtakemonPos().size()==0 && etk.getLng()!=0 && etk.getLat()!=0)
+            {
+                for (Object etkToInsert : etakm.selectAll()) {
+                    EtakemonsPosition e = new EtakemonsPosition();
+                    e.setIdetakemon(((Etakemons)etkToInsert).getId());
+                    float a = Gestion.getRandomPos(etk.getLng());
+                    e.setLng(a);
+                    float b = Gestion.getRandomPos(etk.getLat());
+                    e.setLat(b);
+                    e.setTipoetakemon(((Etakemons) etkToInsert).getTipo());
+                    e.insert();
+                    etkList.add(new EtakemonsPositionObject((EtakemonsPosition)e));
+                }
+            }
+
+            //res = "Etakemon insertado";
+            System.out.println("Lista de posiciones con " + etkList.size()+" entradas.");
+
+        } catch (Exception e) {
+            System.out.println("error al recuperar posiciones etkemon ------- "+e.toString());
+            // res = "error al insertar etkemon ------- "+e.toString();
+            etk = null;
+        }
+
+
+        return  etkList;
+    }
+
+    @POST
+    @Path("/getEtakemonByPosition")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public EtakemonObject  getEtakemonByPosition(String etkPos) {
+        if(etkPos.length() == 0)
+            throw new BadRequestException("id etakemon recibido vacio");
+        EtakemonsPosition etk = new EtakemonsPosition();
+        EtakemonsPositionObject etkList;
+        Etakemons etakem = new Etakemons();
+        Gson gson = new Gson();
+        String res ="";
+        etk = gson.fromJson(etkPos, EtakemonsPosition.class);
+        try {
+            if(etk.selectAllEtakemonPos().size()!=0) {
+                for (Object etkp : etk.selectAllEtakemonPos()) {
+                    //  Class classToLoad = etkp.getClass();
+                    // Object newObject = classToLoad.newInstance();
+                    // if(newObject instanceof EtakemonsPosition)
+                    if (((EtakemonsPosition) etkp).getLat() == etk.getLat()) {
+                        etk.setId(((EtakemonsPosition) etkp).getId());
+                        etk.setTipoetakemon(((EtakemonsPosition) etkp).getTipoetakemon());
+                        etk.setLat(((EtakemonsPosition) etkp).getLat());
+                        etk.setIdetakemon(((EtakemonsPosition) etkp).getIdetakemon());
+                        etk.setLng(((EtakemonsPosition) etkp).getLng());
+                    }
+                }
+            }
+            //res = "Etakemon insertado";
+            System.out.println("etakemon por posiciones es " + etk.getTipoetakemon());
+
+        } catch (Exception e) {
+            System.out.println("error al recuperar posiciones etkemon ------- "+e.toString());
+            // res = "error al insertar etkemon ------- "+e.toString();
+            etk = null;
+        }
+
+
+        return new EtakemonObject(etakem.selectEtakemon("id", etk.getIdetakemon()));
+    }
+
     @GET
     @Path("/etakemonslist")
     @Produces(MediaType.APPLICATION_JSON)
@@ -126,13 +227,12 @@ public class Etakemon {
         return  etkList;
     }
 
-    @GET
+    @POST
     @Path("/cazar/{iduser}/{idetakemon}")
     public String cazar(@PathParam("iduser") int iduser,@PathParam("idetakemon") int idetakemon) {
         UserEtakemons usrEtkemons = new UserEtakemons();
         Etakemons etk = new Etakemons();
         User usr = new User();
-
         String res ="";
         try {
 
@@ -144,7 +244,7 @@ public class Etakemon {
                 usrEtkemons.setIduser(iduser);
                 usrEtkemons.setIdetakemon(idetakemon);
                 usrEtkemons.insert();
-            usr.setTotalEtakemons(usr.getTotalEtakemons() + 1);
+                usr.setTotalEtakemons(usr.getTotalEtakemons() + 1);
                 usr.update("" + usr.getId());
 
             }

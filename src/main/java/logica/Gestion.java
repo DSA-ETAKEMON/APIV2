@@ -5,12 +5,14 @@ import Entity.Etakemons;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Created by hixam on 21/12/16.
  */
 public  class Gestion {
 
+    static int i=0;
     public static double MediaKm (double [] coordenadas, double duracion)
     {
         // double pos1Lat = coordenadas[0];
@@ -150,4 +152,20 @@ public  class Gestion {
     }
 
 
+    public static float getRandomPos(float d)
+    {
+        Random rand = new Random();
+        i++;
+        float a;
+        //float finalX = (float)(rand.nextFloat() + (d - (0.00001)));
+        if(i%2==0)
+        a = (float) (Math.random()*0.0005) + d - ((float) (Math.random()*0.0005)) ;
+        else
+        {
+             a =  d - (float)(Math.random()*0.0002 ) + (float) (Math.random()*0.0005);
+
+        }
+
+        return a;
+    }
 }

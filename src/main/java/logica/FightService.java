@@ -113,6 +113,7 @@ public class FightService {
         {
             System.out.print(e.toString());
             // e.toString();
+            fl=null;
         }
         return fl;
     }
@@ -137,9 +138,37 @@ public class FightService {
         {
             System.out.print(e.toString());
             // e.toString();
+            fl = null;
         }
         return fl;
     }
+
+    @POST
+    @Path("/misretosajugar")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<FightObject> retosRecibidosAJugar(String fight) {
+        if(fight.length() == 0)
+            throw new BadRequestException("Reto incorrecto, json recibido vacio.");
+        Fight pelea = new Fight();
+        Gson gson = new Gson();
+        pelea = gson.fromJson(fight, Fight.class);
+        List<FightObject> fl = new ArrayList<>();
+        try {
+            for (Fight f : pelea.selectFightOrderBy("contrincantedos", pelea.getContrincantedos(),"estado2","TRUE"))
+            {
+                if(f.getJuego1()!=null && Integer.valueOf(f.getGanador())!= 0 && f.getGanador().equals("empate") )
+                fl.add(new FightObject(f));
+            }
+        }catch (Exception e)
+        {
+            System.out.print(e.toString());
+            // e.toString();
+            fl=null;
+        }
+        return fl;
+    }
+
 
     @GET
     @Path("/GetTopUsers")
@@ -177,7 +206,7 @@ public class FightService {
         Fight pelea = new Fight();
          Gson gson = new Gson();
          pelea = gson.fromJson(fight, Fight.class);
-        if(pelea.getEstado1().equals("TRUE") && pelea.getEstado2().equals("TRUE")) {
+        if(pelea.getJuego1().equals("NULL") || pelea.getJuego1().equals("NULL")) {
             try {
                   String jugada1= pelea.getJuego1();
                   String jugada2= pelea.getJuego2();
@@ -206,7 +235,10 @@ public class FightService {
         // no se acepto el reto
        // if(miLista.size()!=0)
         {
-            System.out.println("Reto no aceptado aun **************-----------***************");
+            if(!pelea.getJuego1().equals("NULL") || pelea.getJuego2().equals("NULL"))
+                pelea.update(""+pelea.getId());
+            System.out.println("Tu oponente aun no ha jugado **************-----------***************");
+            return "Tu oponente aun no ha jugado";
         }
         User usr = new User();
         ganador = res1>res2 ? ""+ pelea.getContrincanteuno() : ""+ pelea.getContrincantedos();

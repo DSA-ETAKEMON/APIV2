@@ -64,6 +64,12 @@ public class DAOConnection {
         query.append(" WHERE " + where + " = "  + someThing + " AND " + where2 + " = '" + someThing2+"'");
         return query.toString();
     }
+    public String getSelectQuery(String where, String someThing,String where2, String someThing2) {
+        StringBuilder query = new StringBuilder("SELECT * FROM ");
+        query.append(this.getClass().getSimpleName());
+        query.append(" WHERE " + where + " = '"  + someThing + "' AND " + where2 + " = '" + someThing2+"'");
+        return query.toString();
+    }
 
     public String getSelectQueryByNick() {
         StringBuilder query = new StringBuilder("SELECT * FROM ");

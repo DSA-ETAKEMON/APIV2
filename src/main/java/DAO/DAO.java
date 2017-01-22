@@ -88,6 +88,39 @@ public class DAO extends DAOConnection{
         return fl;
     }
 
+    public List<Fight> selectFightOrderBy(String where, String someThing,String where2, String someThing2) {
+        String query = getSelectQuery(where,someThing,where2,someThing2);
+        System.out.println(query);
+        List<Fight> fl = new ArrayList<>();
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            //int position = 1;
+            // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                Fight pelea  = new Fight();
+                pelea.setId(rs.getInt("id"));
+                pelea.setContrincanteuno(rs.getInt("contrincanteuno"));
+                pelea.setContrincantedos(rs.getInt("contrincantedos"));
+                pelea.setPuntoscontrincanteuno(rs.getInt("puntosContrincanteUno"));
+                pelea.setPuntoscontrincantedos(rs.getInt("puntosContrincanteDos"));
+                pelea.setEstado1(rs.getString("estado1"));
+                pelea.setEstado2(rs.getString("estado2"));
+                pelea.setJuego1(rs.getString("juego1"));
+                pelea.setJuego2(rs.getString("juego2"));
+                pelea.setGanador(rs.getString("ganador"));
+                fl.add((pelea));
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return fl;
+    }
+
     public Fight selectFight(String where, String someThing) {
         String query = getSelectQuery(where,someThing);
         System.out.println(query);
@@ -163,6 +196,36 @@ public class DAO extends DAOConnection{
                 userEtks.setIduser(rs.getInt("iduser"));
                 userEtks.setIdetakemon(rs.getInt("idetakemon"));
                 miLista.add(userEtks);
+                // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
+            }
+            preparedStatement.close();
+            con.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+        return miLista;
+    }
+
+    public List<EtakemonsPosition> selectAllEtakemonPos() {
+        String query = getSelectAllQuery();
+        System.out.println(query);
+        List<EtakemonsPosition> miLista = new ArrayList<EtakemonsPosition>();
+        Connection con = getConnection();
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            // int position = 1;
+            // addPrimaryKeyParameter(preparedStatement, position, primaryKey);
+            ResultSet rs = preparedStatement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            while (rs.next()) {
+
+                EtakemonsPosition userPos = new EtakemonsPosition();
+                userPos.setId(rs.getInt("id"));
+                userPos.setLat(rs.getFloat("lat"));
+                userPos.setLng(rs.getFloat("lng"));
+                userPos.setIdetakemon(rs.getInt("idetakemon"));
+                userPos.setTipoetakemon(rs.getString("tipoetakemon"));
+                miLista.add(userPos);
                 // setFieldsFromResultSet(resultSet, resultSetMetaData, this);
             }
             preparedStatement.close();
