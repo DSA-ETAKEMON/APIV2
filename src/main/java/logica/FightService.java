@@ -44,6 +44,29 @@ public class FightService {
     }
 
     @POST
+    @Path("/borrarReto")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String BorrarReto(String fight) {
+        if(fight.length() == 0)
+            throw new BadRequestException("Reto incorrecto, json recibido vacio.");
+        Fight pelea = new Fight();
+        Gson gson = new Gson();
+        pelea = gson.fromJson(fight, Fight.class);
+        String res="";
+        try {
+
+            pelea.delete();//getUserByNick(us.getNick());
+            res = "Reto borrado";
+        }catch (Exception e)
+        {
+            System.out.print(e.toString());
+            // e.toString();
+            res = "error al borrar reto" + e.toString();
+        }
+        return res;
+    }
+
+    @POST
     @Path("/misretos")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
